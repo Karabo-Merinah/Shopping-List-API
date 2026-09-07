@@ -2,6 +2,7 @@ export interface Item{
     id:number,
     name:string,
     quantity:string,
+    category:string,
     purchased:boolean,
     createdAt:string,
     updatedAt:string
@@ -9,9 +10,11 @@ export interface Item{
 export type CreateItem={
  name:string,
  quantity:string,
+ category:string
 }
 export type UpdateItem={
     name?:string,
     quantity?:string,
+    category?:string,
     purchased?:boolean 
 }
