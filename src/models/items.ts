@@ -8,7 +8,7 @@ export interface Item{
 }
 export type CreateItem={
  name:string,
- quantity?:string,
+ quantity:string,
 }
 export type UpdateItem={
     name?:string,
