@@ -8,7 +8,7 @@ const PORT = 4000;
 //Server object that holds information about requests and sends back response
 const requestListener = (req: IncomingMessage, res: ServerResponse) => {
     //Creates response header with status code -200 and specifies the type which is json
-    if (req.url?.startsWith("/shoppingItems")) {
+    if (req.url?.startsWith("/items")) {
         itemsRoute(req, res)
     }
     else {

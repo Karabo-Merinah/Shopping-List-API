@@ -2,7 +2,7 @@ import { getAllItems, getItemById, createItem, updateItem, deleteItem } from "..
 import { IncomingMessage, ServerResponse } from "node:http";
 
 export const itemsRoute = async (req: IncomingMessage, res: ServerResponse) => {
-    if (req.url?.startsWith("/shoppingItems")) {
+    if (req.url?.startsWith("/items")) {
         console.log(req.url, "request url")
         const parts = req.url.split("/")
         console.log(parts)

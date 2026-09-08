@@ -4,8 +4,7 @@ export interface Item{
     quantity:string,
     category:string,
     purchased:boolean,
-    createdAt:string,
-    updatedAt:string
+
 }
 export type CreateItem={
  name:string,

@@ -21,8 +21,6 @@ export const createItem = (input: CreateItem): Item => {
       quantity: input.quantity ?? "1",
       category:input.category,
       purchased: false,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
    }
    nextId++;
    items.push(newItem)
@@ -37,7 +35,6 @@ export const updateItem = (id: number, updated: UpdateItem): Item | undefined =>
    if (updated.quantity !== undefined) item.quantity = updated.quantity
    if(updated.category !== undefined) item.category=updated.category
    if (updated.purchased !== undefined) item.purchased = updated.purchased
-   item.updatedAt = new Date().toISOString()
    return item
 }
 //deletes an item by comparing the number of items before and after also filter by item where id is not equal to the one provided 
