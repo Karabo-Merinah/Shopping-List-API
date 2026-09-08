@@ -19,7 +19,7 @@ export const createItem = (input: CreateItem): Item => {
       id: nextId,
       name: input.name,
       quantity: input.quantity ?? "1",
-      category:input.category,
+      category: input.category,
       purchased: false,
    }
    nextId++;
@@ -33,7 +33,7 @@ export const updateItem = (id: number, updated: UpdateItem): Item | undefined =>
    //only update the field if there's a value provided 
    if (updated.name !== undefined) item.name = updated.name
    if (updated.quantity !== undefined) item.quantity = updated.quantity
-   if(updated.category !== undefined) item.category=updated.category
+   if (updated.category !== undefined) item.category = updated.category
    if (updated.purchased !== undefined) item.purchased = updated.purchased
    return item
 }

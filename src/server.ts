@@ -1,7 +1,6 @@
 import http, { IncomingMessage, ServerResponse } from 'http'
 import { itemsRoute } from './routes/itemsRoute.js';
 
-
 const PORT = 4000;
 
 //Executed everytime server gets a request from the client 
@@ -15,7 +14,6 @@ const requestListener = (req: IncomingMessage, res: ServerResponse) => {
         res.writeHead(200, { "content-type": "application/json" })
         res.end(JSON.stringify({ message: "Hi ,testing " }))
     }
-
 }
 //Starts a server 
 const server = http.createServer(requestListener)
