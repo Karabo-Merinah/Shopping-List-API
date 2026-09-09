@@ -18,7 +18,7 @@ export const createItem = (input: CreateItem): Item => {
    const newItem: Item = {
       id: nextId,
       name: input.name,
-      quantity: input.quantity ?? "1",
+      quantity: input.quantity,
       category: input.category,
       purchased: false,
    }

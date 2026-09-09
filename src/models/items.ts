@@ -4,7 +4,6 @@ export interface Item {
     quantity: string,
     category: string,
     purchased: boolean,
-
 }
 export type CreateItem = {
     name: string,

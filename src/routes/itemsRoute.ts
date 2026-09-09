@@ -1,5 +1,7 @@
 import { getAllItems, getItemById, createItem, updateItem, deleteItem } from "../controllers/shoppingListItems.js";
 import { IncomingMessage, ServerResponse } from "node:http";
+import { errorResponse,successResponse } from "../errorHandler.js";
+
 
 export const itemsRoute = async (req: IncomingMessage, res: ServerResponse) => {
     if (req.url?.startsWith("/items")) {
@@ -11,28 +13,24 @@ export const itemsRoute = async (req: IncomingMessage, res: ServerResponse) => {
         //Firstly checks if the method is GET and there's no ID 
         if (req.method === "GET" && !id) {
             //Sets the status to 200 -ok  and sets response header  
-            res.writeHead(200, { "content-type": "application/json" })
-            res.end(JSON.stringify(getAllItems()))
+           successResponse(res,200,getAllItems())
             return
         }
         //Get items by id and check if id is not a number if it is not then give invalid item id feedback
         if (req.method === "GET" && id) {
             if (isNaN(id)) {
                 //returns it as a bad request status code of 400
-                res.writeHead(400, { "content-type": "application/json" })
-                res.end(JSON.stringify({ error: "Invalid item id-must be a number" }))
+                errorResponse(res,400,"Invalid item id,it should be a number")
                 return
             }
             //id is a number and no item falls under the specified id then give status code of 404 
             const items = getItemById(id)
             if (!items) {
-                res.writeHead(404, { "content-type": "application/json" })
-                res.end(JSON.stringify({ error: "Item not found" }))
+                errorResponse(res,404,"Item not found")
                 return
             }
             //if it does exist the item then run status code of 200 
-            res.writeHead(200, { "content-type": "application/json" })
-            res.end(JSON.stringify(items))
+             successResponse(res,200,items)
             return
         }
 
@@ -52,42 +50,36 @@ export const itemsRoute = async (req: IncomingMessage, res: ServerResponse) => {
                     const { name, quantity, category } = data
                     //if all input fields are empty then run this
                     if ((!name || name === "") && (!quantity || quantity === "") && (!category || category === "")) {
-                        res.writeHead(400, { "content-type": "application/json" })
-                        res.end(JSON.stringify({ error: "Item  inputs  are  required" }))
+                       errorResponse(res,400,"Item name is required and must be a string")
                         return
                     }
                     //if the  type of the name and quantity is not string  then run this
                     if ((typeof quantity !== "string") && (typeof name !== "string")) {
-                        res.writeHead(400, { "content-type": "application/json" })
-                        res.end(JSON.stringify({ error: "Bad inputs for both inputs -must be string " }))
+                       errorResponse(res,400,"Item quantity is required and must be a string")
                         return
                     }
                     //if the name is empty or not of type string then run this 
                     if (!name || typeof name !== "string") {
-                        res.writeHead(400, { "content-type": "application/json" })
-                        res.end(JSON.stringify({ error: "Item name is required and must be a string" }))
+                       errorResponse(res,400,"Name is required and must be a string")
                         return
                     }
                     //if the quantity is empty or quantity is not string then run this 
                     if (!quantity || typeof quantity !== "string") {
-                        res.writeHead(400, { "content-type": "application/json" })
-                        res.end(JSON.stringify({ error: "Item quantity is required and must be a string" }))
+                        errorResponse(res,400,"Qauntity is required and must be a string")
                         return
                     }
                     //if the category is empty or quantity is not a string then run this 
                     if (!category || typeof category !== "string") {
-                        res.writeHead(400, { "content-type": "application/json" })
-                        res.end(JSON.stringify({ error: "Category is required and must be a string" }))
+                       errorResponse(res,400,"Category is required and must be a string")
+                       return
                     }
                     // if the above conditions are not met then run this to create new item .
                     const newItem = createItem({ name, quantity, category })
-                    res.writeHead(201, { "content-type": "application/json" })
-                    res.end(JSON.stringify(newItem))
+                    successResponse(res,201,newItem)
                 }
                 //catch any other errors that are not specified
                 catch (error) {
-                    res.writeHead(400, { "content-type": "application/json" })
-                    res.end(JSON.stringify({ error: "Invalid JSON payload" }))
+                   errorResponse(res,400,"Invalid JSON payload")
                 }
             })
             return
@@ -96,8 +88,7 @@ export const itemsRoute = async (req: IncomingMessage, res: ServerResponse) => {
         if (req.method === "PUT" && id) {
             //checks if the id is not a number,if it's trully not a number then give error of invalid id input.
             if (isNaN(id)) {
-                res.writeHead(400, { "content-type": "application/json" })
-                res.end(JSON.stringify({ error: "Invalid id input ,must be a number " }))
+                errorResponse(res,400,"Invalid id input ,must be a number")
                 return
             }
             let body = ""
@@ -110,42 +101,36 @@ export const itemsRoute = async (req: IncomingMessage, res: ServerResponse) => {
                     const updateData = JSON.parse(body)
                     //check if the name is  not undefined and type of name is not string then run  this error 
                     if (updateData.name !== undefined && typeof updateData.name !== "string") {
-                        res.writeHead(400, { "content-type": "application/json" })
-                        res.end(JSON.stringify({ error: "Bad input type for name" }))
+                        errorResponse(res,400,"Bad input type for name")
                         return
                     }
                     //check if the quantity is  not undefined and type of name is not string then run  this error 
                     if (updateData.quantity !== undefined && typeof updateData.quantity !== "string") {
-                        res.writeHead(400, { "content-type": "application/json" })
-                        res.end(JSON.stringify({ error: "Bad input type for  quantity" }))
+                       errorResponse(res,400,"Bad input type for  quantity" )
                         return
                     }
                     //check if the purchased is  not undefined and type of purchased is not string then run  this error 
                     if (updateData.purchased !== undefined && typeof updateData.purchased !== "boolean") {
-                        res.writeHead(400, { "content-type": "application/json" })
-                        res.end(JSON.stringify({ error: "Bad input type for purchased " }))
+                          errorResponse(res,400,"Bad input type for purchased " )
                         return
                     }
                     //checks if the category is not undefined and type of category is not string then run this error
                     if (updateData.category !== undefined && typeof updateData.category !== "string") {
-                        res.writeHead(400, { "content-type": "application/json" })
-                        res.end(JSON.stringify({ error: "Bad input type for category " }))
+                       errorResponse(res,400,"Bad input type for category")
+                       return
                     }
                     //   Update item with given id and input fields
                     const updatedItem = updateItem(id, updateData)
                     if (updatedItem) {
-                        res.writeHead(200, { "content-type": "application/json" })
-                        res.end(JSON.stringify(updatedItem))
+                       successResponse(res,200,updatedItem)
                     }
                     //if no item is found with the specified id
                     else {
-                        res.writeHead(404, { "content-type": "application/json" })
-                        res.end(JSON.stringify({ error: "Item not found" }))
+                      errorResponse(res,404,"Item not found")
                     }
                 }
                 catch (error) {
-                    res.writeHead(400, { "content-type": "application/json" })
-                    res.end(JSON.stringify({ error: "Invalid JSON" }))
+                  errorResponse(res,400,"Invalid JSON")
                 }
             })
             return
@@ -155,26 +140,22 @@ export const itemsRoute = async (req: IncomingMessage, res: ServerResponse) => {
         if (req.method === "DELETE" && id) {
             //Validate if the id is a number ,if it's not then throw an error of bad input for id 
             if (isNaN(id)) {
-                res.writeHead(400, { "content-type": "application/json" })
-                res.end(JSON.stringify({ error: "Bad input for id " }))
+                errorResponse(res,400,"Bad input for id")
                 return
             }
             const deleted = deleteItem(id)
             // if the id is found then delete the item by showing status code of 200 
             if (deleted) {
-                res.writeHead(204, { "content-type": "application/json" })
-                res.end(JSON.stringify({ message: "Item deleted successfully" }))
+               successResponse(res,204,null)
             }
             //if no item is found with that id then throw an error 
             else {
-                res.writeHead(404, { "content-type": "application/json" })
-                res.end(JSON.stringify({ error: "Item not found" }))
+               errorResponse(res,404,"Item not found")
             }
             return
         }
         //all other errors that are  not handled then should fall in this 
-        res.writeHead(405, { "content-type": "application/json" })
-        res.end(JSON.stringify({ error: "Method not allowed on /shoppingItems" }))
+        errorResponse(res,405,"Method not allowed on /items")
 
 
     }
