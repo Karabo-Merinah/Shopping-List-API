@@ -156,7 +156,5 @@ export const itemsRoute = async (req: IncomingMessage, res: ServerResponse) => {
         }
         //all other errors that are  not handled then should fall in this 
         errorResponse(res,405,"Method not allowed on /items")
-
-
     }
 }

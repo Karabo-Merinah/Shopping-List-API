@@ -1,7 +1,7 @@
 import { ServerResponse } from "node:http";
 
 //Sends an error response 
-//status code such as 400,404 ,500
+//status code such as 400,404 
 export const errorResponse=(res:ServerResponse,statusCode:number,message:string)=>{
     res.writeHead(statusCode,{"content-type":"application/json"})
     res.end(JSON.stringify({error:message}))
