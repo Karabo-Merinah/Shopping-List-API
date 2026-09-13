@@ -5,9 +5,7 @@ import { errorResponse,successResponse } from "../errorHandler.js";
 
 export const itemsRoute = async (req: IncomingMessage, res: ServerResponse) => {
     if (req.url?.startsWith("/items")) {
-        console.log(req.url, "request url")
         const parts = req.url.split("/")
-        console.log(parts)
         const id = parts[2] ? parseInt(parts[2]) : undefined
         //Get all the items 
         //Firstly checks if the method is GET and there's no ID 
